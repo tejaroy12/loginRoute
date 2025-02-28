@@ -44,6 +44,22 @@ const verifyToken = (request, response, next) => {
   }
 }
 
+app.POST("/register/",async (req,res) => {
+  const {username,password} = req.body 
+  const regUser = `
+    select * from user where username='${username}'
+  `
+  const user = await db.get(regUser) 
+  if (user !== undefined) {
+    const insertQ = `Insert into user (username,password) value (
+      '${username}','${password}'
+    )`;
+    const insertU = db.run(insertQ) 
+    res.send("user Registered Successfull")
+  }
+}
+  
+
 app.post('/login', async (req, res) => {
   const {username, password} = req.body
   const getUsername = `
